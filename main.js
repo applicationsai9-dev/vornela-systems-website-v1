@@ -452,8 +452,11 @@ function initRobot() {
       const angle = Math.atan2(dy, dx)
       const dist  = Math.min(Math.hypot(dx, dy), MAX_TRAVEL)
 
+      const tx = Math.cos(angle) * dist
+      const ty = Math.sin(angle) * dist
+
       gsap.to(el, {
-        attr: { cx: bx + Math.cos(angle) * dist, cy: by + Math.sin(angle) * dist },
+        attr: { transform: `translate(${tx}, ${ty})` },
         duration: 0.25,
         ease: 'power2.out',
         overwrite: 'auto',
@@ -462,8 +465,8 @@ function initRobot() {
   })
 
   document.addEventListener('mouseleave', () => {
-    eyes.forEach(({ el, bx, by }) => {
-      gsap.to(el, { attr: { cx: bx, cy: by }, duration: 0.6, ease: 'elastic.out(1,0.5)' })
+    eyes.forEach(({ el }) => {
+      gsap.to(el, { attr: { transform: 'translate(0, 0)' }, duration: 0.6, ease: 'elastic.out(1,0.5)' })
     })
   })
 }
