@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free AI Audit — Vornela Systems</title>
+  <meta name="description" content="Claim your free AI audit from Vornela Systems. We'll analyse your business and show you exactly where AI can save you time, cut costs, and unlock growth.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://vornela.com/audit">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* ── Page-specific overrides ── */
+    .audit-page {
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .audit-page .nav { position: relative; }
+
+    .audit-hero {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      padding: 5rem 0 6rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .audit-hero__glow {
+      position: absolute;
+      width: 1000px;
+      height: 700px;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(ellipse, rgba(143, 245, 255, 0.04) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .audit-hero__inner {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .audit-hero__text {
+      padding-top: 0.5rem;
+    }
+
+    .audit-hero__back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-display);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 2.5rem;
+      transition: color 0.2s ease;
+    }
+
+    .audit-hero__back:hover { color: var(--cyan); }
+
+    .audit-hero__back svg { transition: transform 0.2s ease; }
+    .audit-hero__back:hover svg { transform: translateX(-3px); }
+
+    .audit-hero__title {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 5vw, 3.8rem);
+      font-weight: 700;
+      letter-spacing: -0.035em;
+      line-height: 1.05;
+      margin: 0.75rem 0 1.75rem;
+    }
+
+    .audit-hero__sub {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      line-height: 1.7;
+      max-width: 460px;
+    }
+
+    .audit-hero__proof {
+      margin-top: 3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .audit-proof-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .audit-proof-item svg {
+      flex-shrink: 0;
+      color: var(--cyan);
+      margin-top: 1px;
+    }
+
+    /* Card */
+    .audit-card {
+      background: var(--surface-2);
+      border: 1px solid rgba(143, 245, 255, 0.12);
+      box-shadow:
+        0 0 80px rgba(143, 245, 255, 0.05),
+        inset 0 1px 0 rgba(143, 245, 255, 0.07);
+      padding: clamp(2.25rem, 4vw, 3.5rem);
+    }
+
+    .audit-card__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.4rem;
+    }
+
+    .audit-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .audit-label {
+      font-family: var(--font-display);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .audit-optional {
+      font-weight: 400;
+      font-size: 0.68rem;
+      letter-spacing: 0;
+      text-transform: none;
+      font-family: var(--font-body);
+      opacity: 0.5;
+      margin-left: 0.3rem;
+    }
+
+    .audit-field--full {
+      grid-column: 1 / -1;
+    }
+
+    .audit-textarea {
+      resize: vertical;
+      min-height: 88px;
+    }
+
+    select.audit-input {
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='rgba(173,170,171,0.5)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      padding-right: 2.5rem;
+      cursor: pointer;
+    }
+
+    select.audit-input option { background: #1a1a2e; color: var(--text); }
+
+    .audit-input {
+      padding: 0.875rem 1.2rem;
+      background: var(--surface-3);
+      border: 1px solid var(--outline);
+      border-radius: 0;
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      width: 100%;
+    }
+
+    .audit-input::placeholder { color: rgba(173, 170, 171, 0.4); }
+
+    .audit-input:focus {
+      border-color: rgba(143, 245, 255, 0.35);
+      box-shadow: 0 0 24px rgba(143, 245, 255, 0.09);
+    }
+
+    .audit-input--invalid {
+      border-color: rgba(255, 90, 90, 0.5);
+      box-shadow: none;
+    }
+
+    .audit-err {
+      font-size: 0.7rem;
+      color: rgba(255, 110, 110, 0.9);
+      min-height: 0.9rem;
+      line-height: 1.3;
+      display: block;
+    }
+
+    .audit-actions {
+      margin-top: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .audit-actions .btn {
+      padding: 0.95rem 2.5rem;
+    }
+
+    .audit-reassure {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.78rem;
+      color: rgba(173, 170, 171, 0.55);
+    }
+
+    .audit-reassure svg { flex-shrink: 0; color: rgba(143, 245, 255, 0.5); }
+
+    /* Success */
+    .audit-success {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      text-align: center;
+      padding: 3.5rem 1rem;
+      color: var(--cyan);
+    }
+
+    .audit-success__msg {
+      font-family: var(--font-display);
+      font-size: clamp(1.3rem, 3vw, 1.8rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--cyan);
+    }
+
+    .audit-success__sub {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      max-width: 320px;
+    }
+
+    /* Responsive */
+    @media (max-width: 860px) {
+      .audit-hero__inner {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+      }
+      .audit-hero__sub { max-width: 100%; }
+    }
+
+    @media (max-width: 560px) {
+      .audit-card__grid { grid-template-columns: 1fr; }
+      .audit-actions { align-items: stretch; }
+      .audit-actions .btn { width: 100%; }
+    }
+  </style>
+</head>
+<body class="audit-page">
+
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <div class="container nav__inner">
+      <a href="index.html" class="nav__logo">VORNELA SYSTEMS</a>
+      <div class="nav__links">
+        <a href="index.html#services">Services</a>
+        <a href="index.html#process">Process</a>
+        <a href="index.html#ai-automations">AI Automations</a>
+        <a href="index.html#customer-intelligence">Customer Intelligence</a>
+        <a href="index.html#work">Work</a>
+        <a href="index.html#contact">Contact</a>
+      </div>
+      <a href="book-a-call.html" class="btn btn--sm">Book a Call</a>
+    </div>
+  </nav>
+
+  <!-- AUDIT FORM -->
+  <section class="audit-hero">
+    <div class="audit-hero__glow" aria-hidden="true"></div>
+    <div class="container">
+      <div class="audit-hero__inner">
+
+        <!-- Left: copy + proof points -->
+        <div class="audit-hero__text">
+          <a href="index.html" class="audit-hero__back">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
+            Back to Vornela
+          </a>
+          <p class="label">Free Offer</p>
+          <h1 class="audit-hero__title">Get Your<br><span class="text-gradient">Free AI Audit</span></h1>
+          <p class="audit-hero__sub">We&rsquo;ll analyse your business and show you exactly where AI can save you time, cut costs, and unlock growth &mdash; no commitment, no jargon, just clarity.</p>
+
+          <div class="audit-hero__proof">
+            <div class="audit-proof-item">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>We identify your highest-leverage AI opportunities</span>
+            </div>
+            <div class="audit-proof-item">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>No jargon — plain language, practical recommendations</span>
+            </div>
+            <div class="audit-proof-item">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>No commitment required — zero strings attached</span>
+            </div>
+            <div class="audit-proof-item">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>We respond within 24 hours, every time</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: form card -->
+        <div class="audit-card">
+
+          <form id="auditForm" novalidate>
+            <div class="audit-card__grid">
+
+              <div class="audit-field">
+                <label class="audit-label" for="auditName">Full Name</label>
+                <input type="text" id="auditName" name="fullName" class="audit-input"
+                  placeholder="Your full name" autocomplete="name">
+                <span class="audit-err" id="auditNameErr" role="alert" aria-live="polite"></span>
+              </div>
+
+              <div class="audit-field">
+                <label class="audit-label" for="auditBiz">Business Name</label>
+                <input type="text" id="auditBiz" name="businessName" class="audit-input"
+                  placeholder="Your business name" autocomplete="organization">
+                <span class="audit-err" id="auditBizErr" role="alert" aria-live="polite"></span>
+              </div>
+
+              <div class="audit-field">
+                <label class="audit-label" for="auditEmail">Email Address</label>
+                <input type="email" id="auditEmail" name="email" class="audit-input"
+                  placeholder="Your business email" autocomplete="email">
+                <span class="audit-err" id="auditEmailErr" role="alert" aria-live="polite"></span>
+              </div>
+
+              <div class="audit-field">
+                <label class="audit-label" for="auditUrl">Website URL <span class="audit-optional">(optional)</span></label>
+                <input type="text" id="auditUrl" name="website" class="audit-input"
+                  placeholder="https://yourbusiness.com">
+                <span class="audit-err" id="auditUrlErr" role="alert" aria-live="polite"></span>
+              </div>
+
+              <div class="audit-field">
+                <label class="audit-label" for="auditSocial">Social Handle <span class="audit-optional">(optional)</span></label>
+                <input type="text" id="auditSocial" name="social" class="audit-input"
+                  placeholder="Instagram or LinkedIn handle">
+                <span class="audit-err" id="auditSocialErr" role="alert" aria-live="polite"></span>
+              </div>
+
+              <div class="audit-field">
+                <label class="audit-label" for="auditIndustry">Industry / Sector <span class="audit-optional">(optional)</span></label>
+                <input type="text" id="auditIndustry" name="industry" class="audit-input"
+                  placeholder="e.g. Construction, Healthcare, Retail">
+                <span class="audit-err" id="auditIndustryErr" role="alert" aria-live="polite"></span>
+              </div>
+
+              <div class="audit-field">
+                <label class="audit-label" for="auditTeam">Team Size <span class="audit-optional">(optional)</span></label>
+                <select id="auditTeam" name="teamSize" class="audit-input">
+                  <option value="" disabled selected>Select team size</option>
+                  <option value="just-me">Just me</option>
+                  <option value="2-5">2 – 5 people</option>
+                  <option value="6-15">6 – 15 people</option>
+                  <option value="16-50">16 – 50 people</option>
+                  <option value="50+">50+ people</option>
+                </select>
+                <span class="audit-err" id="auditTeamErr" role="alert" aria-live="polite"></span>
+              </div>
+
+              <div class="audit-field">
+                <label class="audit-label" for="auditRevenue">Monthly Revenue <span class="audit-optional">(optional)</span></label>
+                <select id="auditRevenue" name="monthlyRevenue" class="audit-input">
+                  <option value="" disabled selected>Select revenue range</option>
+                  <option value="under-1k">Under €1,000</option>
+                  <option value="1-3k">€1,000 – €3,000</option>
+                  <option value="3-10k">€3,000 – €10,000</option>
+                  <option value="10-30k">€10,000 – €30,000</option>
+                  <option value="30k+">€30,000+</option>
+                </select>
+                <span class="audit-err" id="auditRevenueErr" role="alert" aria-live="polite"></span>
+              </div>
+
+              <div class="audit-field audit-field--full">
+                <label class="audit-label" for="auditChallenge">Biggest Challenge Right Now <span class="audit-optional">(optional)</span></label>
+                <textarea id="auditChallenge" name="biggestChallenge" class="audit-input audit-textarea"
+                  placeholder="e.g. Too much time on admin, chasing leads, difficulty scaling — tell us what's taking up your time"></textarea>
+                <span class="audit-err" id="auditChallengeErr" role="alert" aria-live="polite"></span>
+              </div>
+
+            </div>
+
+            <div class="audit-actions">
+              <button type="submit" class="btn" id="auditSubmit">Claim Your Free Audit</button>
+              <p class="audit-reassure">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="3" y="11" width="18" height="11" rx="2"/>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+                No spam. No commitment. We&rsquo;ll be in touch within 24 hours.
+              </p>
+            </div>
+          </form>
+
+          <div class="audit-success" id="auditSuccess" hidden>
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+            <p class="audit-success__msg">Thanks! Your free AI audit request has been received. We&rsquo;ll be in touch within 24 hours.</p>
+            <p class="audit-success__sub">While you wait, explore what Vornela Systems can build for you.</p>
+            <a href="index.html" class="btn btn--ghost" style="margin-top:0.5rem">Back to the Site</a>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__left">
+        <div class="footer__logo">VORNELA SYSTEMS</div>
+        <p class="footer__tagline">Building the businesses of tomorrow, today.</p>
+        <address class="footer__nap" style="font-style:normal;font-size:0.78rem;color:var(--text-muted);margin:.5rem 0 .75rem;line-height:1.7">
+          Dublin, Ireland &mdash; Serving Ireland, UK &amp; USA
+        </address>
+        <p class="footer__copy">&copy; 2026 Vornela Systems. All rights reserved.</p>
+      </div>
+      <div class="footer__right">
+        <div class="footer__col">
+          <p class="footer__col-head label">Services</p>
+          <a href="/capabilities/website-design.html">Web Design</a>
+          <a href="/capabilities/seo-ads.html">SEO &amp; Google Ads</a>
+          <a href="/capabilities/ai-automations.html">AI Automations</a>
+          <a href="/capabilities/customer-intelligence.html">Customer Intelligence</a>
+        </div>
+        <div class="footer__col">
+          <p class="footer__col-head label">Company</p>
+          <a href="index.html#work">Our Work</a>
+          <a href="index.html#process">Process</a>
+          <a href="index.html#contact">Contact</a>
+        </div>
+        <div class="footer__col">
+          <p class="footer__col-head label">Connect</p>
+          <a href="#">Twitter</a>
+          <a href="#">LinkedIn</a>
+          <a href="#">Instagram</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    ;(function () {
+      const ENDPOINT  = 'https://script.google.com/macros/s/AKfycbwbHmDh-ep430j8QlbDThqFMKXHi_clLHe_5bz80D809HCC3IAvQjI4QL1ztW9a3xk_oA/exec'
+      const form      = document.getElementById('auditForm')
+      const successEl = document.getElementById('auditSuccess')
+      const submitBtn = document.getElementById('auditSubmit')
+      if (!form) return
+
+      const fields = {
+        fullName:         { el: document.getElementById('auditName'),      err: document.getElementById('auditNameErr')      },
+        businessName:     { el: document.getElementById('auditBiz'),       err: document.getElementById('auditBizErr')       },
+        email:            { el: document.getElementById('auditEmail'),     err: document.getElementById('auditEmailErr')     },
+        website:          { el: document.getElementById('auditUrl'),       err: document.getElementById('auditUrlErr')       },
+        social:           { el: document.getElementById('auditSocial'),    err: document.getElementById('auditSocialErr')    },
+        industry:         { el: document.getElementById('auditIndustry'),  err: document.getElementById('auditIndustryErr')  },
+        teamSize:         { el: document.getElementById('auditTeam'),      err: document.getElementById('auditTeamErr')      },
+        monthlyRevenue:   { el: document.getElementById('auditRevenue'),   err: document.getElementById('auditRevenueErr')   },
+        biggestChallenge: { el: document.getElementById('auditChallenge'), err: document.getElementById('auditChallengeErr') },
+      }
+
+      function isEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v) }
+
+      function setError(f, msg) {
+        f.el.classList.add('audit-input--invalid')
+        f.err.textContent = msg
+      }
+
+      function clearError(f) {
+        f.el.classList.remove('audit-input--invalid')
+        f.err.textContent = ''
+      }
+
+      function validate() {
+        let ok = true
+        if (!fields.fullName.el.value.trim())     { setError(fields.fullName,     'Please enter your full name.');     ok = false } else clearError(fields.fullName)
+        if (!fields.businessName.el.value.trim()) { setError(fields.businessName, 'Please enter your business name.'); ok = false } else clearError(fields.businessName)
+        if (!fields.email.el.value.trim())        { setError(fields.email,        'Please enter your email address.'); ok = false }
+        else if (!isEmail(fields.email.el.value.trim())) { setError(fields.email, 'Please enter a valid email address.'); ok = false }
+        else clearError(fields.email)
+        ;['website', 'social', 'industry', 'teamSize', 'monthlyRevenue', 'biggestChallenge'].forEach(function (k) { clearError(fields[k]) })
+        return ok
+      }
+
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault()
+        if (!validate()) return
+
+        submitBtn.disabled    = true
+        submitBtn.textContent = 'Sending…'
+
+        const payload = Object.fromEntries(new FormData(form))
+        payload.formType = 'audit'
+
+        try {
+          await fetch(ENDPOINT, {
+            method:  'POST',
+            mode:    'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify(payload),
+          })
+          form.hidden      = true
+          successEl.hidden = false
+          form.reset()
+        } catch (_) {
+          submitBtn.disabled    = false
+          submitBtn.textContent = 'Claim Your Free Audit'
+          setError(fields.email, 'Something went wrong. Please email us at hello@vornelasystems.com')
+        }
+      })
+
+      Object.values(fields).forEach(function (f) {
+        f.el.addEventListener('input',  function () { clearError(f) })
+        f.el.addEventListener('change', function () { clearError(f) })
+      })
+    })()
+  </script>
+
+</body>
+</html>

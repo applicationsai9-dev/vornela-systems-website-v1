@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book a Call — Vornela Systems</title>
+  <meta name="description" content="Book a discovery call with Vornela Systems. Answer four quick questions and we'll get you booked in.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://vornela.com/book-a-call">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .bac-page {
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .bac-page .nav { position: relative; }
+
+    /* ── Section ── */
+    .bac-section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 1.5rem 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bac-glow {
+      position: absolute;
+      width: 900px;
+      height: 600px;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(ellipse, rgba(143, 245, 255, 0.04) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .bac-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 2.5rem;
+      align-self: flex-start;
+      max-width: 560px;
+      width: 100%;
+      transition: color 0.2s ease;
+    }
+    .bac-back:hover { color: var(--cyan); }
+    .bac-back svg { transition: transform 0.2s ease; }
+    .bac-back:hover svg { transform: translateX(-3px); }
+
+    /* ── Heading ── */
+    .bac-heading {
+      text-align: center;
+      margin-bottom: 2.75rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .bac-heading__title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4.5vw, 3rem);
+      font-weight: 700;
+      letter-spacing: -0.035em;
+      line-height: 1.08;
+      margin: 0.6rem 0 1rem;
+    }
+
+    .bac-heading__sub {
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
+    /* ── Card ── */
+    .bac-card {
+      width: 100%;
+      max-width: 560px;
+      background: var(--surface-2);
+      border: 1px solid rgba(143, 245, 255, 0.12);
+      box-shadow: 0 0 80px rgba(143, 245, 255, 0.05), inset 0 1px 0 rgba(143, 245, 255, 0.07);
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    /* ── Progress ── */
+    .bac-progress {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.25rem 2rem;
+      border-bottom: 1px solid var(--outline);
+    }
+
+    .bac-progress__track {
+      flex: 1;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.07);
+      overflow: hidden;
+    }
+
+    .bac-progress__fill {
+      height: 100%;
+      background: var(--cyan);
+      transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+      width: 25%;
+    }
+
+    .bac-progress__label {
+      font-family: var(--font-display);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      flex-shrink: 0;
+      width: 3.5rem;
+      text-align: right;
+    }
+
+    /* ── Steps ── */
+    .bac-steps {
+      padding: 2.25rem 2rem 2rem;
+      position: relative;
+      min-height: 220px;
+    }
+
+    .bac-step {
+      display: none;
+      flex-direction: column;
+      gap: 1.5rem;
+      transition: opacity 0.26s ease, transform 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .bac-step.visible {
+      display: flex;
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* ── Question label ── */
+    .bac-q-label {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.4;
+      letter-spacing: -0.01em;
+    }
+
+    /* ── Select ── */
+    .bac-select {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 100%;
+      padding: 0.875rem 2.75rem 0.875rem 1.2rem;
+      background-color: var(--surface-3);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23adaaab' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      border: 1px solid var(--outline);
+      border-radius: 0;
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      cursor: pointer;
+      outline: none;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .bac-select:focus {
+      border-color: rgba(143, 245, 255, 0.35);
+      box-shadow: 0 0 24px rgba(143, 245, 255, 0.09);
+    }
+
+    .bac-select--invalid {
+      border-color: rgba(255, 90, 90, 0.5);
+    }
+
+    .bac-select option { background: #1a191b; color: var(--text); }
+
+    .bac-err {
+      font-size: 0.72rem;
+      color: rgba(255, 110, 110, 0.9);
+      margin-top: -0.75rem;
+    }
+
+    /* ── Nav buttons ── */
+    .bac-nav {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    .bac-btn-back {
+      background: none;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 0;
+      transition: color 0.2s ease;
+    }
+
+    .bac-btn-back:hover { color: var(--text); }
+
+    /* ── Success states ── */
+    .bac-success {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 3rem 2rem;
+      gap: 1.25rem;
+    }
+
+    .bac-success.visible { display: flex; }
+
+    .bac-success__icon { color: var(--cyan); }
+
+    .bac-success__title {
+      font-family: var(--font-display);
+      font-size: clamp(1.3rem, 3vw, 1.7rem);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      color: var(--cyan);
+    }
+
+    .bac-success__sub {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      max-width: 340px;
+    }
+
+    /* ── Step 5 contact form ── */
+    .bac-card--form { max-width: 660px; }
+
+    .bac-form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+
+    .bac-form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .bac-form-field--full { grid-column: 1 / -1; }
+
+    .bac-field-label {
+      font-family: var(--font-display);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .bac-field-optional {
+      font-weight: 400;
+      font-size: 0.68rem;
+      letter-spacing: 0;
+      text-transform: none;
+      font-family: var(--font-body);
+      opacity: 0.5;
+      margin-left: 0.3rem;
+    }
+
+    .bac-field-input {
+      padding: 0.875rem 1.2rem;
+      background: var(--surface-3);
+      border: 1px solid var(--outline);
+      border-radius: 0;
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      width: 100%;
+    }
+
+    .bac-field-input::placeholder { color: rgba(173, 170, 171, 0.4); }
+
+    .bac-field-input:focus {
+      border-color: rgba(143, 245, 255, 0.35);
+      box-shadow: 0 0 24px rgba(143, 245, 255, 0.09);
+    }
+
+    .bac-field-input--invalid {
+      border-color: rgba(255, 90, 90, 0.5);
+      box-shadow: none;
+    }
+
+    .bac-field-err {
+      font-size: 0.7rem;
+      color: rgba(255, 110, 110, 0.9);
+      min-height: 0.9rem;
+      line-height: 1.3;
+    }
+
+    .bac-field-textarea {
+      resize: vertical;
+      min-height: 88px;
+    }
+
+    select.bac-field-input {
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='rgba(173,170,171,0.5)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      padding-right: 2.5rem;
+      cursor: pointer;
+    }
+
+    select.bac-field-input option { background: #1a1a2e; color: var(--text); }
+
+    @media (max-width: 600px) {
+      .bac-steps { padding: 1.75rem 1.25rem 1.5rem; }
+      .bac-progress { padding: 1rem 1.25rem; }
+      .bac-form-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body class="bac-page">
+
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <div class="container nav__inner">
+      <a href="index.html" class="nav__logo">VORNELA SYSTEMS</a>
+      <div class="nav__links">
+        <a href="index.html#services">Services</a>
+        <a href="index.html#process">Process</a>
+        <a href="index.html#ai-automations">AI Automations</a>
+        <a href="index.html#customer-intelligence">Customer Intelligence</a>
+        <a href="index.html#work">Work</a>
+        <a href="index.html#contact">Contact</a>
+      </div>
+      <a href="audit.html" class="btn btn--sm btn--ghost">Free AI Audit</a>
+      <a href="book-a-call.html" class="btn btn--sm">Book a Call</a>
+    </div>
+  </nav>
+
+  <!-- FORM SECTION -->
+  <section class="bac-section">
+    <div class="bac-glow" aria-hidden="true"></div>
+
+    <a href="index.html" class="bac-back">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
+      Back to Vornela
+    </a>
+
+    <div class="bac-heading">
+      <p class="label">Discovery</p>
+      <h1 class="bac-heading__title">Let&rsquo;s See If We&rsquo;re a Good Fit</h1>
+      <p class="bac-heading__sub">Answer four quick questions, then leave your details and we&rsquo;ll get you booked in.</p>
+    </div>
+
+    <div class="bac-card">
+
+      <!-- Progress bar -->
+      <div class="bac-progress">
+        <div class="bac-progress__track">
+          <div class="bac-progress__fill" id="bacProgressFill"></div>
+        </div>
+        <span class="bac-progress__label" id="bacProgressLabel">1 of 5</span>
+      </div>
+
+      <!-- Steps -->
+      <div class="bac-steps" id="bacSteps">
+
+        <!-- Step 1 -->
+        <div class="bac-step visible" id="bacStep1">
+          <p class="bac-q-label">What are you looking to solve?</p>
+          <select class="bac-select" id="bacQ1">
+            <option value="">Select an option</option>
+            <option value="automation">Too many manual tasks — I need automation</option>
+            <option value="website">I need a professional website</option>
+            <option value="seo">I want to rank higher on Google</option>
+            <option value="leads">I'm losing leads and need a follow up system</option>
+            <option value="unsure">I'm not sure yet — I need advice</option>
+          </select>
+          <span class="bac-err" id="bacErr1"></span>
+          <div class="bac-nav">
+            <button class="btn" id="bacNext1" type="button">Next</button>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="bac-step" id="bacStep2">
+          <p class="bac-q-label">How soon are you looking to get started?</p>
+          <select class="bac-select" id="bacQ2">
+            <option value="">Select an option</option>
+            <option value="immediately">Immediately — I'm ready now</option>
+            <option value="month">Within the next month</option>
+            <option value="3months">In the next 3 months</option>
+            <option value="researching">Just researching for now</option>
+          </select>
+          <span class="bac-err" id="bacErr2"></span>
+          <div class="bac-nav">
+            <button class="btn" id="bacNext2" type="button">Next</button>
+            <button class="bac-btn-back" id="bacBack2" type="button">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
+              Back
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="bac-step" id="bacStep3">
+          <p class="bac-q-label">What is your current monthly revenue?</p>
+          <select class="bac-select" id="bacQ3">
+            <option value="">Select an option</option>
+            <option value="pre">Pre-revenue</option>
+            <option value="under2k">Under €2,000</option>
+            <option value="2to5k">€2,000 – €5,000</option>
+            <option value="5to10k">€5,000 – €10,000</option>
+            <option value="10kplus">€10,000+</option>
+          </select>
+          <span class="bac-err" id="bacErr3"></span>
+          <div class="bac-nav">
+            <button class="btn" id="bacNext3" type="button">Next</button>
+            <button class="bac-btn-back" id="bacBack3" type="button">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
+              Back
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="bac-step" id="bacStep4">
+          <p class="bac-q-label">How did you hear about Vornela Systems?</p>
+          <select class="bac-select" id="bacQ4">
+            <option value="">Select an option</option>
+            <option value="google">Google Search</option>
+            <option value="instagram">Instagram</option>
+            <option value="tiktok">TikTok</option>
+            <option value="linkedin">LinkedIn</option>
+            <option value="referral">Word of mouth / Referral</option>
+            <option value="other">Other</option>
+          </select>
+          <span class="bac-err" id="bacErr4"></span>
+          <div class="bac-nav">
+            <button class="btn" id="bacNext4" type="button">Next</button>
+            <button class="bac-btn-back" id="bacBack4" type="button">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
+              Back
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 5: Contact details -->
+        <div class="bac-step" id="bacStep5">
+          <p class="bac-q-label">Almost there — leave your details below.</p>
+
+          <form id="bacContactForm" novalidate>
+          <div class="bac-form-grid">
+
+            <div class="bac-form-field">
+              <label class="bac-field-label" for="bacFName">Full Name</label>
+              <input type="text" id="bacFName" name="fullName" class="bac-field-input" placeholder="Your full name" autocomplete="name">
+              <span class="bac-field-err" id="bacFNameErr"></span>
+            </div>
+
+            <div class="bac-form-field">
+              <label class="bac-field-label" for="bacFBiz">Business Name</label>
+              <input type="text" id="bacFBiz" name="businessName" class="bac-field-input" placeholder="Your business name" autocomplete="organization">
+              <span class="bac-field-err" id="bacFBizErr"></span>
+            </div>
+
+            <div class="bac-form-field">
+              <label class="bac-field-label" for="bacFEmail">Email Address</label>
+              <input type="email" id="bacFEmail" name="email" class="bac-field-input" placeholder="Your business email" autocomplete="email">
+              <span class="bac-field-err" id="bacFEmailErr"></span>
+            </div>
+
+            <div class="bac-form-field">
+              <label class="bac-field-label" for="bacFUrl">Website URL <span class="bac-field-optional">(optional)</span></label>
+              <input type="text" id="bacFUrl" name="website" class="bac-field-input" placeholder="https://yourbusiness.com">
+              <span class="bac-field-err" id="bacFUrlErr"></span>
+            </div>
+
+            <div class="bac-form-field">
+              <label class="bac-field-label" for="bacFSocial">Social Handle <span class="bac-field-optional">(optional)</span></label>
+              <input type="text" id="bacFSocial" name="social" class="bac-field-input" placeholder="Instagram or LinkedIn handle">
+              <span class="bac-field-err" id="bacFSocialErr"></span>
+            </div>
+
+            <div class="bac-form-field">
+              <label class="bac-field-label" for="bacFIndustry">Industry / Sector <span class="bac-field-optional">(optional)</span></label>
+              <input type="text" id="bacFIndustry" name="industry" class="bac-field-input" placeholder="e.g. Construction, Healthcare, Retail">
+              <span class="bac-field-err" id="bacFIndustryErr"></span>
+            </div>
+
+            <div class="bac-form-field">
+              <label class="bac-field-label" for="bacFTeam">Team Size <span class="bac-field-optional">(optional)</span></label>
+              <select id="bacFTeam" name="teamSize" class="bac-field-input">
+                <option value="" disabled selected>Select team size</option>
+                <option value="just-me">Just me</option>
+                <option value="2-5">2 – 5 people</option>
+                <option value="6-15">6 – 15 people</option>
+                <option value="16-50">16 – 50 people</option>
+                <option value="50+">50+ people</option>
+              </select>
+              <span class="bac-field-err" id="bacFTeamErr"></span>
+            </div>
+
+            <div class="bac-form-field">
+              <label class="bac-field-label" for="bacFPhone">Phone Number <span class="bac-field-optional">(optional)</span></label>
+              <input type="tel" id="bacFPhone" name="phone" class="bac-field-input" placeholder="+353 or +44 number" autocomplete="tel">
+              <span class="bac-field-err" id="bacFPhoneErr"></span>
+            </div>
+
+            <div class="bac-form-field bac-form-field--full">
+              <label class="bac-field-label" for="bacFChallenge">Anything else we should know? <span class="bac-field-optional">(optional)</span></label>
+              <textarea id="bacFChallenge" name="notes" class="bac-field-input bac-field-textarea"
+                placeholder="Tell us more about what you're looking to achieve or any specific challenges you're facing"></textarea>
+              <span class="bac-field-err" id="bacFChallengeErr"></span>
+            </div>
+
+          </div>
+          </form>
+
+          <div class="bac-nav">
+            <button class="btn" id="bacSubmit" type="button">Book a Call</button>
+            <button class="bac-btn-back" id="bacBack5" type="button">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
+              Back
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Success: Qualified -->
+      <div class="bac-success" id="bacSuccessQualified">
+        <svg class="bac-success__icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+        </svg>
+        <p class="bac-success__title">Thanks! We&rsquo;ve received your booking request.</p>
+        <p class="bac-success__sub">We&rsquo;ll be in touch shortly to confirm your call. In the meantime, pick a time that works for you.</p>
+        <!-- Replace YOUR_CALENDLY_LINK with your actual Calendly URL -->
+        <a href="https://calendly.com/YOUR_CALENDLY_LINK" target="_blank" rel="noopener" class="btn" style="margin-top:0.25rem">Book Your Call</a>
+      </div>
+
+      <!-- Success: Not Qualified -->
+      <div class="bac-success" id="bacSuccessWarm">
+        <svg class="bac-success__icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+        </svg>
+        <p class="bac-success__title" style="color:var(--text)">Thanks! We&rsquo;ve received your booking request.</p>
+        <p class="bac-success__sub">We&rsquo;ll be in touch shortly to confirm your call.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__left">
+        <div class="footer__logo">VORNELA SYSTEMS</div>
+        <p class="footer__tagline">Building the businesses of tomorrow, today.</p>
+        <address class="footer__nap" style="font-style:normal;font-size:0.78rem;color:var(--text-muted);margin:.5rem 0 .75rem;line-height:1.7">
+          Dublin, Ireland &mdash; Serving Ireland, UK &amp; USA
+        </address>
+        <p class="footer__copy">&copy; 2026 Vornela Systems. All rights reserved.</p>
+      </div>
+      <div class="footer__right">
+        <div class="footer__col">
+          <p class="footer__col-head label">Services</p>
+          <a href="/capabilities/website-design.html">Web Design</a>
+          <a href="/capabilities/seo-ads.html">SEO &amp; Google Ads</a>
+          <a href="/capabilities/ai-automations.html">AI Automations</a>
+          <a href="/capabilities/customer-intelligence.html">Customer Intelligence</a>
+        </div>
+        <div class="footer__col">
+          <p class="footer__col-head label">Company</p>
+          <a href="index.html#work">Our Work</a>
+          <a href="index.html#process">Process</a>
+          <a href="index.html#contact">Contact</a>
+        </div>
+        <div class="footer__col">
+          <p class="footer__col-head label">Connect</p>
+          <a href="#">Twitter</a>
+          <a href="#">LinkedIn</a>
+          <a href="#">Instagram</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const ENDPOINT = 'https://script.google.com/macros/s/AKfycbwbHmDh-ep430j8QlbDThqFMKXHi_clLHe_5bz80D809HCC3IAvQjI4QL1ztW9a3xk_oA/exec'
+
+    const TOTAL = 5
+    let current = 1
+
+    const card    = document.querySelector('.bac-card')
+    const steps   = [1, 2, 3, 4, 5].map(n => document.getElementById('bacStep' + n))
+    const selects = [1, 2, 3, 4].map(n => document.getElementById('bacQ' + n))
+    const errEls  = [1, 2, 3, 4].map(n => document.getElementById('bacErr' + n))
+    const fill    = document.getElementById('bacProgressFill')
+    const lbl     = document.getElementById('bacProgressLabel')
+
+    const cf = {
+      fullName:     { el: document.getElementById('bacFName'),      err: document.getElementById('bacFNameErr')      },
+      businessName: { el: document.getElementById('bacFBiz'),       err: document.getElementById('bacFBizErr')       },
+      email:        { el: document.getElementById('bacFEmail'),     err: document.getElementById('bacFEmailErr')     },
+      website:      { el: document.getElementById('bacFUrl'),       err: document.getElementById('bacFUrlErr')       },
+      social:       { el: document.getElementById('bacFSocial'),    err: document.getElementById('bacFSocialErr')    },
+      industry:     { el: document.getElementById('bacFIndustry'),  err: document.getElementById('bacFIndustryErr')  },
+      teamSize:     { el: document.getElementById('bacFTeam'),      err: document.getElementById('bacFTeamErr')      },
+      phone:        { el: document.getElementById('bacFPhone'),     err: document.getElementById('bacFPhoneErr')     },
+      notes:        { el: document.getElementById('bacFChallenge'), err: document.getElementById('bacFChallengeErr') },
+    }
+
+    function updateProgress(n) {
+      fill.style.width = (n / TOTAL * 100) + '%'
+      lbl.textContent  = n === 5 ? 'Details' : n + ' of 4'
+    }
+
+    function delay(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms))
+    }
+
+    async function goTo(toIndex, dir) {
+      const fromEl = steps[current - 1]
+      const toEl   = steps[toIndex - 1]
+
+      fromEl.style.transition = 'opacity 0.22s ease, transform 0.22s ease'
+      fromEl.style.opacity    = '0'
+      fromEl.style.transform  = dir > 0 ? 'translateX(-14px)' : 'translateX(14px)'
+
+      if (toIndex === 5) {
+        card.classList.add('bac-card--form')
+      } else {
+        card.classList.remove('bac-card--form')
+      }
+
+      await delay(230)
+
+      fromEl.classList.remove('visible')
+      fromEl.style.opacity   = ''
+      fromEl.style.transform = ''
+      fromEl.style.display   = 'none'
+
+      toEl.style.transition = 'none'
+      toEl.style.opacity    = '0'
+      toEl.style.transform  = dir > 0 ? 'translateX(14px)' : 'translateX(-14px)'
+      toEl.style.display    = 'flex'
+      toEl.classList.add('visible')
+
+      toEl.getBoundingClientRect()
+      toEl.style.transition = 'opacity 0.28s ease, transform 0.28s cubic-bezier(0.22, 1, 0.36, 1)'
+      toEl.style.opacity    = '1'
+      toEl.style.transform  = 'translateX(0)'
+
+      current = toIndex
+      updateProgress(toIndex)
+    }
+
+    function validateQ(index) {
+      const val = selects[index - 1].value
+      if (!val) {
+        selects[index - 1].classList.add('bac-select--invalid')
+        errEls[index - 1].textContent = 'Please select an option to continue.'
+        return false
+      }
+      selects[index - 1].classList.remove('bac-select--invalid')
+      errEls[index - 1].textContent = ''
+      return true
+    }
+
+    function isEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v) }
+
+    function setFieldErr(f, msg) {
+      f.el.classList.add('bac-field-input--invalid')
+      f.err.textContent = msg
+    }
+
+    function clearFieldErr(f) {
+      f.el.classList.remove('bac-field-input--invalid')
+      f.err.textContent = ''
+    }
+
+    function validateContact() {
+      let ok = true
+      if (!cf.fullName.el.value.trim())     { setFieldErr(cf.fullName,     'Please enter your full name.');     ok = false } else clearFieldErr(cf.fullName)
+      if (!cf.businessName.el.value.trim()) { setFieldErr(cf.businessName, 'Please enter your business name.'); ok = false } else clearFieldErr(cf.businessName)
+      if (!cf.email.el.value.trim())        { setFieldErr(cf.email,        'Please enter your email address.'); ok = false }
+      else if (!isEmail(cf.email.el.value.trim())) { setFieldErr(cf.email, 'Please enter a valid email address.'); ok = false }
+      else clearFieldErr(cf.email)
+      ;['website', 'social', 'industry', 'teamSize', 'phone', 'notes'].forEach(k => clearFieldErr(cf[k]))
+      return ok
+    }
+
+    function isQualified() {
+      const timeline = selects[1].value
+      const revenue  = selects[2].value
+      return (timeline === 'immediately' || timeline === 'month') &&
+             (revenue  === '2to5k'      || revenue  === '5to10k' || revenue === '10kplus')
+    }
+
+    async function handleSubmit() {
+      if (!validateContact()) return
+
+      const btn = document.getElementById('bacSubmit')
+      btn.disabled    = true
+      btn.textContent = 'Sending…'
+
+      const labelMap = {
+        q1: { automation: 'Too many manual tasks — I need automation', website: 'I need a professional website', seo: 'I want to rank higher on Google', leads: 'I\'m losing leads and need a follow up system', unsure: 'I\'m not sure yet — I need advice' },
+        q2: { immediately: 'Immediately — I\'m ready now', month: 'Within the next month', '3months': 'In the next 3 months', researching: 'Just researching for now' },
+        q3: { pre: 'Pre-revenue', under2k: 'Under €2,000', '2to5k': '€2,000 – €5,000', '5to10k': '€5,000 – €10,000', '10kplus': '€10,000+' },
+        q4: { google: 'Google Search', instagram: 'Instagram', tiktok: 'TikTok', linkedin: 'LinkedIn', referral: 'Word of mouth / Referral', other: 'Other' },
+      }
+
+      const contactForm = document.getElementById('bacContactForm')
+      const payload = Object.fromEntries(new FormData(contactForm))
+      payload.formType        = 'booking'
+      payload.biggestChallenge = labelMap.q1[selects[0].value] || selects[0].value
+      payload.timeline         = labelMap.q2[selects[1].value] || selects[1].value
+      payload.monthlyRevenue   = labelMap.q3[selects[2].value] || selects[2].value
+      payload.howHeard         = labelMap.q4[selects[3].value] || selects[3].value
+
+      const qualified = isQualified()
+
+      try {
+        await fetch(ENDPOINT, {
+          method:  'POST',
+          mode:    'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify(payload),
+        })
+        document.getElementById('bacSteps').style.display     = 'none'
+        document.querySelector('.bac-progress').style.display = 'none'
+        document.getElementById(qualified ? 'bacSuccessQualified' : 'bacSuccessWarm').classList.add('visible')
+        contactForm.reset()
+      } catch (_) {
+        btn.disabled    = false
+        btn.textContent = 'Book a Call'
+        setFieldErr(cf.email, 'Something went wrong. Please email us at hello@vornelasystems.com')
+      }
+    }
+
+    // Next buttons
+    document.getElementById('bacNext1').addEventListener('click', () => { if (validateQ(1)) goTo(2, 1) })
+    document.getElementById('bacNext2').addEventListener('click', () => { if (validateQ(2)) goTo(3, 1) })
+    document.getElementById('bacNext3').addEventListener('click', () => { if (validateQ(3)) goTo(4, 1) })
+    document.getElementById('bacNext4').addEventListener('click', () => { if (validateQ(4)) goTo(5, 1) })
+    document.getElementById('bacSubmit').addEventListener('click', handleSubmit)
+
+    // Back buttons
+    document.getElementById('bacBack2').addEventListener('click', () => goTo(1, -1))
+    document.getElementById('bacBack3').addEventListener('click', () => goTo(2, -1))
+    document.getElementById('bacBack4').addEventListener('click', () => goTo(3, -1))
+    document.getElementById('bacBack5').addEventListener('click', () => goTo(4, -1))
+
+    // Clear qualifying errors on change
+    selects.forEach((sel, i) => {
+      sel.addEventListener('change', () => {
+        sel.classList.remove('bac-select--invalid')
+        errEls[i].textContent = ''
+      })
+    })
+
+    // Clear contact form errors on input
+    Object.values(cf).forEach(f => {
+      f.el.addEventListener('input',  () => clearFieldErr(f))
+      f.el.addEventListener('change', () => clearFieldErr(f))
+    })
+
+    updateProgress(1)
+  </script>
+
+</body>
+</html>

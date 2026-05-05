@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+Disallow: /*.bak$
+Disallow: /index.html.bak
+Disallow: /main.js.bak
+Disallow: /styles.css.bak
+
+Sitemap: https://vornela.com/sitemap.xml

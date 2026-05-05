@@ -32,6 +32,7 @@ gsap.ticker.lagSmoothing(0, 0)
 document.addEventListener('DOMContentLoaded', () => {
   initSmoothAnchorLinks()
   initCursor()
+  initFloatingPaths()
   initHero()
   initRobot()
   initNav()
@@ -40,31 +41,22 @@ document.addEventListener('DOMContentLoaded', () => {
   initBentoLinks()
   initStats()
   initProcess()
-  initWork()
+  initEngagement()
   initSectionHeads()
+  initFeatureSplits()
+  initFaq()
+  initWhoWeServe()
+  initScrollShowcase()
   initCTA()
 })
 
 // ========================
 // SMOOTH ANCHOR NAVIGATION
 // ========================
-// workST and workTrack are set by initWork() so nav can interact with the pin
-let workST = null
-let workTrack = null
-
 function initSmoothAnchorLinks() {
   const easingFn = t => t < 0.5
     ? 4 * t * t * t
-    : 1 - Math.pow(-2 * t + 2, 3) / 2  // ease-in-out cubic
-
-  // Reset the work track cleanly — syncs both visual state AND scrub tween internal state
-  const resetWorkTrack = () => {
-    if (workST && workST.animation) {
-      workST.animation.progress(0)
-    } else if (workTrack) {
-      gsap.set(workTrack, { x: 0 })
-    }
-  }
+    : 1 - Math.pow(-2 * t + 2, 3) / 2
 
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', e => {
@@ -76,41 +68,7 @@ function initSmoothAnchorLinks() {
 
       e.preventDefault()
 
-      const currentY = window.scrollY
-      const inWorkPin = workST && currentY >= workST.start && currentY <= workST.end
-
-      // Clicking "Work" — always land at the START of the pinned section (first card)
-      if (href === '#work') {
-        const dest = workST ? workST.start : target.offsetTop
-        resetWorkTrack()
-
-        // Coming from below the pin — bypass the scrub range by jumping to just
-        // above Work, then smooth scroll the final stretch in cleanly
-        if (workST && currentY > workST.end) {
-          lenis.scrollTo(dest - 200, { duration: 0 })
-          requestAnimationFrame(() => {
-            lenis.scrollTo(dest, { duration: 0.8, easing: easingFn })
-          })
-          return
-        }
-
-        lenis.scrollTo(dest, { duration: 1.4, easing: easingFn })
-        return
-      }
-
-      // Navigating away while horizontally scrolled within the work pin
-      if (inWorkPin) {
-        resetWorkTrack()
-        // Jump scroll position to work section start (no animation)
-        lenis.scrollTo(workST.start, { duration: 0 })
-        // On next frame, smoothly scroll to destination
-        requestAnimationFrame(() => {
-          lenis.scrollTo(target, { offset: -80, duration: 1.4, easing: easingFn })
-        })
-        return
-      }
-
-      // Normal navigation — duration scales with distance so pace feels consistent
+      // Duration scales with distance so pace feels consistent
       const distance = Math.abs(target.getBoundingClientRect().top)
       const duration = Math.min(3.4, Math.max(1.2, distance / 900))
       lenis.scrollTo(target, { offset: -80, duration, easing: easingFn })
@@ -149,6 +107,63 @@ function initCursor() {
 // ========================
 // HERO ENTRANCE
 // ========================
+// ========================
+// FLOATING BACKGROUND PATHS
+// ========================
+function initFloatingPaths() {
+  const container = document.getElementById('heroPaths')
+  if (!container || prefersReducedMotion) return
+
+  const NS = 'http://www.w3.org/2000/svg'
+  const svg = document.createElementNS(NS, 'svg')
+  svg.setAttribute('viewBox', '0 0 696 316')
+  svg.setAttribute('fill', 'none')
+  svg.setAttribute('aria-hidden', 'true')
+
+  // Two mirrored layers: position 1 (cyan) and position -1 (blue)
+  const layers = [
+    { position: 1,  color: '143,245,255' },  // --cyan
+    { position: -1, color: '102,157,255' },  // --blue
+  ]
+
+  layers.forEach(({ position, color }) => {
+    for (let i = 0; i < 36; i++) {
+      const p = 380 - i * 5 * position
+      const q = 189 + i * 6
+      const r = 312 - i * 5 * position
+      const s = 216 - i * 6
+      const t = 152 - i * 5 * position
+      const u = 343 - i * 6
+      const v = 616 - i * 5 * position
+      const w = 470 - i * 6
+      const x = 684 - i * 5 * position
+      const y = 875 - i * 6
+
+      const d = `M-${p} -${q}C-${p} -${q} -${r} ${s} ${t} ${u}C${v} ${w} ${x} ${y} ${x} ${y}`
+
+      const opacityLo = +(0.03 + i * 0.008).toFixed(3)
+      const opacityHi = +(0.06 + i * 0.016).toFixed(3)
+      const width     = +(0.5  + i * 0.03).toFixed(2)
+      const dur       = (20 + (i % 7) * 1.8 + (position === -1 ? 3.5 : 0)).toFixed(1)
+      const delay     = (-(i * 0.6 + (position === -1 ? 10 : 0))).toFixed(1)
+
+      const path = document.createElementNS(NS, 'path')
+      path.setAttribute('d', d)
+      path.setAttribute('stroke', `rgba(${color},1)`)
+      path.setAttribute('stroke-width', width)
+      path.setAttribute('pathLength', '1')
+      path.style.setProperty('--path-dur',        `${dur}s`)
+      path.style.setProperty('--path-delay',      `${delay}s`)
+      path.style.setProperty('--path-opacity-lo', opacityLo)
+      path.style.setProperty('--path-opacity-hi', opacityHi)
+
+      svg.appendChild(path)
+    }
+  })
+
+  container.appendChild(svg)
+}
+
 function initHero() {
   if (prefersReducedMotion) {
     gsap.set(['.hero__label', '.hero__sub', '.hero__cta', '.hero__scroll-hint', '.hero__robot'], { opacity: 1 })
@@ -369,31 +384,46 @@ function initProcess() {
 }
 
 // ========================
-// SELECTED WORK — HORIZONTAL SCROLL
+// ENGAGEMENT TIMELINE REVEALS
 // ========================
-function initWork() {
+function initEngagement() {
   if (prefersReducedMotion) return
 
-  workTrack = document.querySelector('.work__track')
-  if (!workTrack) return
+  gsap.utils.toArray('.eng-phase').forEach((phase, i) => {
+    gsap.fromTo(phase,
+      { y: 40, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.75,
+        ease: 'power3.out',
+        delay: i * 0.1,
+        scrollTrigger: { trigger: phase, start: 'top 88%' }
+      }
+    )
+  })
 
-  gsap.matchMedia().add('(min-width: 900px)', () => {
-    const getScrollDist = () => workTrack.scrollWidth - window.innerWidth + 60
+  const gantt = document.querySelector('.eng-gantt-wrap')
+  if (gantt) {
+    gsap.fromTo(gantt,
+      { y: 28, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out',
+        scrollTrigger: { trigger: gantt, start: 'top 88%' } }
+    )
+  }
 
-    workST = ScrollTrigger.create({
-      trigger: '.work',
-      start: 'top top',
-      end: () => `+=${getScrollDist()}`,
-      scrub: 1.2,
-      pin: true,
-      invalidateOnRefresh: true,
-      animation: gsap.to(workTrack, {
-        x: () => -getScrollDist(),
-        ease: 'none',
-      }),
-    })
-
-    return () => { workST = null }
+  gsap.utils.toArray('.partners__layer').forEach((layer, i) => {
+    gsap.fromTo(layer,
+      { y: 24, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.65,
+        ease: 'power2.out',
+        delay: i * 0.08,
+        scrollTrigger: { trigger: layer, start: 'top 88%' }
+      }
+    )
   })
 }
 
@@ -474,6 +504,128 @@ function initRobot() {
 // ========================
 // CTA REVEAL
 // ========================
+// ========================
+// FEATURE SPLIT SECTIONS
+// ========================
+function initFeatureSplits() {
+  document.querySelectorAll('.feature-split').forEach(section => {
+    const text     = section.querySelector('[data-fs-text]')
+    const mainCard = section.querySelector('[data-fs-main]')
+    const bgCard   = section.querySelector('[data-fs-bg]')
+
+    if (prefersReducedMotion) {
+      if (text) gsap.set(text, { opacity: 1 })
+      if (mainCard) gsap.set(mainCard, { opacity: 1 })
+      if (bgCard) gsap.set(bgCard, { opacity: 1 })
+      return
+    }
+
+    if (text) {
+      gsap.fromTo(text,
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out',
+          scrollTrigger: { trigger: section, start: 'top 78%' } }
+      )
+    }
+
+    // Main card slides down into place
+    if (mainCard) {
+      gsap.fromTo(mainCard,
+        { y: -20, opacity: 0 },
+        { y: 30, opacity: 1, duration: 1.2, ease: 'power2.out',
+          scrollTrigger: { trigger: section, start: 'top 78%' } }
+      )
+    }
+
+    // BG card slides up — opposite direction creates depth separation
+    if (bgCard) {
+      gsap.fromTo(bgCard,
+        { y: 20, opacity: 0 },
+        { y: -20, opacity: 0.88, duration: 1.2, ease: 'power2.out', delay: 0.08,
+          scrollTrigger: { trigger: section, start: 'top 78%' } }
+      )
+    }
+  })
+}
+
+function initFaq() {
+  document.querySelectorAll('.faq__q').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq__item')
+      const answer = item.querySelector('.faq__a')
+      const isOpen = btn.getAttribute('aria-expanded') === 'true'
+
+      document.querySelectorAll('.faq__q[aria-expanded="true"]').forEach(open => {
+        if (open !== btn) {
+          open.setAttribute('aria-expanded', 'false')
+          const a = open.closest('.faq__item').querySelector('.faq__a')
+          a.classList.remove('is-open')
+        }
+      })
+
+      btn.setAttribute('aria-expanded', String(!isOpen))
+      answer.removeAttribute('hidden')
+      answer.classList.toggle('is-open', !isOpen)
+    })
+  })
+}
+
+function initWhoWeServe() {
+  const BIZ  = ['startup', 'sole trader', 'growing SME', 'enterprise team', 'new business']
+  const LOCS = ['Dublin', 'London', 'New York', 'Cork', 'Belfast', 'Chicago']
+
+  function clearEl(el) {
+    while (el.firstChild) el.removeChild(el.firstChild)
+  }
+
+  function showWord(el, word, instant) {
+    const span = document.createElement('span')
+    span.className = instant ? 'tc-word tc-word--instant' : 'tc-word'
+    span.textContent = word
+    clearEl(el)
+    el.appendChild(span)
+  }
+
+  function startCycle(el, words, interval, startOffset) {
+    if (!el) return
+    let idx = 0
+    showWord(el, words[0], true)
+
+    function tick() {
+      const cur = el.querySelector('.tc-word')
+      if (!cur) return
+      cur.classList.add('tc-word--out')
+      setTimeout(() => {
+        idx = (idx + 1) % words.length
+        showWord(el, words[idx], false)
+        setTimeout(tick, interval)
+      }, 300)
+    }
+
+    setTimeout(tick, interval + startOffset)
+  }
+
+  startCycle(document.getElementById('wwsBiz'), BIZ,  2800, 0)
+  startCycle(document.getElementById('wwsLoc'), LOCS, 2600, 500)
+
+  if (prefersReducedMotion) return
+
+  const section = document.querySelector('.wws')
+  if (!section) return
+
+  gsap.fromTo('[data-wws-headline]',
+    { y: 32, opacity: 0 },
+    { y: 0, opacity: 1, duration: 1, ease: 'power3.out',
+      scrollTrigger: { trigger: section, start: 'top 82%' } }
+  )
+  gsap.fromTo('[data-wws-tags]',
+    { y: 20, opacity: 0 },
+    { y: 0, opacity: 1, duration: 0.8, ease: 'power2.out', delay: 0.18,
+      scrollTrigger: { trigger: section, start: 'top 82%' } }
+  )
+}
+
+
 function initCTA() {
   if (prefersReducedMotion) {
     gsap.set('.cta__inner', { opacity: 1 })
@@ -494,6 +646,76 @@ function initCTA() {
     }
   )
 }
+
+// ========================
+// SCROLL SHOWCASE — 3D tilt + arrow navigation
+// ========================
+function initScrollShowcase() {
+  const section    = document.querySelector('.scroll-showcase')
+  const card       = document.querySelector('[data-showcase-card]')
+  const header     = document.querySelector('[data-showcase-header]')
+  const slides     = document.querySelectorAll('.showcase-slide')
+  const metaSlides = document.querySelectorAll('.showcase-meta__slide')
+  const counter    = document.querySelector('.showcase-counter__cur')
+  const btnPrev    = document.querySelector('[data-reel-prev]')
+  const btnNext    = document.querySelector('[data-reel-next]')
+  if (!section || !card) return
+
+  // Header entry reveal
+  gsap.fromTo(header,
+    { y: 40, opacity: 0 },
+    { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out',
+      scrollTrigger: { trigger: section, start: 'top 80%' } }
+  )
+
+  if (prefersReducedMotion) {
+    gsap.set(card, { rotateX: 0, scale: 1 })
+  } else {
+    // 3D tilt scrub: card flattens as it scrolls into the viewport
+    gsap.fromTo(card,
+      { rotateX: 30, scale: 1.12 },
+      {
+        rotateX: 0,
+        scale: 1,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 70%',
+          end: 'top 10%',
+          scrub: 1.8,
+        }
+      }
+    )
+  }
+
+  // Arrow slide navigation
+  let current = 0
+  const total = slides.length
+
+  function goTo(index) {
+    const prev = current
+    current = ((index % total) + total) % total
+    if (current === prev) return
+
+    slides[prev].classList.remove('active')
+    slides[current].classList.add('active')
+    metaSlides[prev]?.classList.remove('active')
+    metaSlides[current]?.classList.add('active')
+    if (counter) counter.textContent = String(current + 1).padStart(2, '0')
+
+    // Start incoming video, let outgoing fade before pausing
+    slides[current].querySelector('video')?.play().catch(() => {})
+    const prevVideo = slides[prev].querySelector('video')
+    if (prevVideo) setTimeout(() => { prevVideo.pause(); prevVideo.currentTime = 0 }, 750)
+  }
+
+  btnPrev?.addEventListener('click', () => goTo(current - 1))
+  btnNext?.addEventListener('click', () => goTo(current + 1))
+
+  // Ensure first slide's video is playing on init
+  slides[0]?.querySelector('video')?.play().catch(() => {})
+}
+
 
 // ========================
 // FORM SUBMIT HANDLER
