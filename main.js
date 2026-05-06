@@ -31,6 +31,7 @@ gsap.ticker.lagSmoothing(0, 0)
 // ========================
 document.addEventListener('DOMContentLoaded', () => {
   initAnnouncementBar()
+  initExitIntent()
   initSmoothAnchorLinks()
   initCursor()
   initFloatingPaths()
@@ -227,6 +228,77 @@ function initHero() {
       start: 'top top',
       end: 'bottom top',
       scrub: 1.5,
+    }
+  })
+}
+
+// ========================
+// EXIT INTENT SLIDE-IN
+// ========================
+function initExitIntent() {
+  const el = document.getElementById('exitIntent')
+  const form = document.getElementById('exitIntentForm')
+  const closeBtn = document.getElementById('exitIntentClose')
+  const dismissLink = document.getElementById('exitIntentDismiss')
+  if (!el) return
+
+  const DISMISS_KEY = 'vornela_exit_dismissed'
+  const SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000
+  const ENDPOINT = 'https://script.google.com/macros/s/AKfycbwbHmDh-ep430j8QlbDThqFMKXHi_clLHe_5bz80D809HCC3IAvQjI4QL1ztW9a3xk_oA/exec'
+
+  const dismissed = localStorage.getItem(DISMISS_KEY)
+  if (dismissed && Date.now() - Number(dismissed) < SEVEN_DAYS) return
+  if (sessionStorage.getItem('vornela_audit_submitted')) return
+
+  let triggered = false
+
+  function show() {
+    if (triggered) return
+    triggered = true
+    el.setAttribute('aria-hidden', 'false')
+    el.classList.add('visible')
+  }
+
+  function hide() {
+    el.classList.remove('visible')
+    el.setAttribute('aria-hidden', 'true')
+    localStorage.setItem(DISMISS_KEY, String(Date.now()))
+  }
+
+  document.addEventListener('mouseleave', e => {
+    if (e.clientY < 20) show()
+  })
+
+  closeBtn.addEventListener('click', hide)
+  dismissLink.addEventListener('click', hide)
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault()
+    const btn = form.querySelector('.exit-intent__btn')
+    btn.disabled = true
+    btn.textContent = 'Sending…'
+    const payload = Object.fromEntries(new FormData(form))
+    payload.formType = 'exit-intent'
+    try {
+      await fetch(ENDPOINT, {
+        method: 'POST', mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+      const success = document.createElement('div')
+      success.className = 'exit-intent__success'
+      const strong = document.createElement('strong')
+      strong.textContent = 'Got it — we’ll be in touch.'
+      const p = document.createElement('p')
+      p.textContent = 'Check your inbox within 24 hours.'
+      success.appendChild(strong)
+      success.appendChild(p)
+      form.replaceWith(success)
+      sessionStorage.setItem('vornela_audit_submitted', '1')
+      setTimeout(hide, 3000)
+    } catch (_) {
+      btn.disabled = false
+      btn.textContent = 'Get the Free Audit'
     }
   })
 }
