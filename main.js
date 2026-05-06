@@ -30,7 +30,6 @@ gsap.ticker.lagSmoothing(0, 0)
 // INIT ON DOM READY
 // ========================
 document.addEventListener('DOMContentLoaded', () => {
-  initAnnouncementBar()
   initExitIntent()
   initSmoothAnchorLinks()
   initCursor()
@@ -300,32 +299,6 @@ function initExitIntent() {
       btn.disabled = false
       btn.textContent = 'Get the Free Audit'
     }
-  })
-}
-
-// ========================
-// ANNOUNCEMENT BAR
-// ========================
-function initAnnouncementBar() {
-  const bar = document.getElementById('announcementBar')
-  const nav = document.getElementById('nav')
-  const closeBtn = document.getElementById('announcementClose')
-  if (!bar) return
-
-  const DISMISS_KEY = 'vornela_bar_dismissed'
-  const SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000
-
-  const dismissed = localStorage.getItem(DISMISS_KEY)
-  if (dismissed && Date.now() - Number(dismissed) < SEVEN_DAYS) {
-    bar.classList.add('hidden')
-    nav.style.top = '0'
-    return
-  }
-
-  closeBtn.addEventListener('click', () => {
-    bar.classList.add('hidden')
-    nav.style.top = '0'
-    localStorage.setItem(DISMISS_KEY, String(Date.now()))
   })
 }
 
