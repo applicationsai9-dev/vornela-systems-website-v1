@@ -242,7 +242,9 @@
       font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 2.6rem);
       font-weight: 700; margin-bottom: 1rem;
     }
-    .cap-cta-wrap p { color: var(--text-muted); margin-bottom: 2rem; font-size: 1rem; }
+    .cap-cta-wrap p { color: var(--text-muted); margin-bottom: 1.25rem; font-size: 1rem; }
+    .cap-cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 0; }
+    .cap-cta-reassure { font-size: 0.72rem; color: rgba(173,170,171,.35); margin-top: 12px; }
 
     .divider { height: 1px; background: var(--outline); max-width: 860px; margin: 0 auto; }
 
@@ -383,7 +385,11 @@
   <div class="cap-cta-wrap">
     <h2>Ready to build<br>something real?</h2>
     <p>Tell us about your business and we'll get back to you within 24 hours.</p>
-    <a href="../index.html#contact" class="btn">Book a Call</a>
+    <div class="cap-cta-btns">
+      <a href="../book-a-call.html" class="btn">Book a Strategy Call</a>
+      <a href="../audit.html" class="btn btn--ghost">Get a Free Audit &rarr;</a>
+    </div>
+    <p class="cap-cta-reassure">Free audit &middot; We respond within 24 hours.</p>
   </div>
 
   <script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js"></script>
