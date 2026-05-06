@@ -347,6 +347,115 @@
       .bac-progress { padding: 1rem 1.25rem; }
       .bac-form-grid { grid-template-columns: 1fr; }
     }
+
+    /* ── Two-column layout ── */
+    .bac-layout {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 28px;
+      width: 100%;
+      max-width: 900px;
+      align-items: start;
+    }
+    .bac-layout .bac-card {
+      max-width: none;
+    }
+
+    /* ── What happens next sidebar ── */
+    .bac-next {
+      background: rgba(143, 245, 255, 0.04);
+      border: 1px solid rgba(143, 245, 255, 0.12);
+      border-radius: 4px;
+      padding: 24px 20px;
+      position: sticky;
+      top: 100px;
+    }
+    .bac-next__label {
+      display: block;
+      margin-bottom: 20px;
+    }
+    .bac-next__steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .bac-next__step {
+      display: flex;
+      gap: 12px;
+      padding-bottom: 18px;
+      position: relative;
+    }
+    .bac-next__step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: 13px;
+      top: 28px;
+      bottom: 0;
+      width: 1px;
+      background: rgba(143, 245, 255, 0.12);
+    }
+    .bac-next__num {
+      width: 27px;
+      height: 27px;
+      background: rgba(143, 245, 255, 0.08);
+      border: 1px solid rgba(143, 245, 255, 0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--cyan);
+      flex-shrink: 0;
+    }
+    .bac-next__content { padding-top: 2px; }
+    .bac-next__content h4 {
+      font-family: var(--font-display);
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 3px;
+    }
+    .bac-next__content p {
+      font-size: 0.72rem;
+      color: rgba(173, 170, 171, 0.55);
+      line-height: 1.55;
+    }
+    .bac-next__badges {
+      margin-top: 4px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .bac-next__badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.72rem;
+      color: rgba(173, 170, 171, 0.45);
+    }
+    .bac-next__badge svg { color: rgba(143, 245, 255, 0.45); flex-shrink: 0; }
+
+    @media (max-width: 800px) {
+      .bac-layout {
+        grid-template-columns: 1fr;
+      }
+      .bac-layout .bac-card {
+        max-width: 560px;
+        margin: 0 auto;
+        width: 100%;
+      }
+      .bac-next {
+        max-width: 560px;
+        margin: 0 auto;
+        width: 100%;
+        position: static;
+        order: -1;
+      }
+    }
   </style>
 </head>
 <body class="bac-page">
@@ -383,6 +492,7 @@
       <p class="bac-heading__sub">Answer four quick questions, then leave your details and we&rsquo;ll get you booked in.</p>
     </div>
 
+    <div class="bac-layout">
     <div class="bac-card">
 
       <!-- Progress bar -->
@@ -580,6 +690,55 @@
       </div>
 
     </div>
+
+    <!-- WHAT HAPPENS NEXT SIDEBAR -->
+    <aside class="bac-next">
+      <span class="bac-next__label label">What happens after you book</span>
+
+      <div class="bac-next__steps">
+        <div class="bac-next__step">
+          <div class="bac-next__num">1</div>
+          <div class="bac-next__content">
+            <h4>You get a confirmation</h4>
+            <p>Calendar invite within 24 hours. We&rsquo;ll suggest a few times that work &mdash; you pick one.</p>
+          </div>
+        </div>
+        <div class="bac-next__step">
+          <div class="bac-next__num">2</div>
+          <div class="bac-next__content">
+            <h4>We do our homework</h4>
+            <p>Before the call we review your website, your Google presence, and your online footprint. You won&rsquo;t be explaining yourself from scratch.</p>
+          </div>
+        </div>
+        <div class="bac-next__step">
+          <div class="bac-next__num">3</div>
+          <div class="bac-next__content">
+            <h4>30-minute strategy call</h4>
+            <p>We walk you through exactly what we found and what we&rsquo;d fix first. No pitch deck, just clarity on what&rsquo;s costing you.</p>
+          </div>
+        </div>
+        <div class="bac-next__step">
+          <div class="bac-next__num">4</div>
+          <div class="bac-next__content">
+            <h4>You decide what&rsquo;s next</h4>
+            <p>We walk you through what we&rsquo;d do and what it would look like. You leave with a clear picture of your options.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bac-next__badges">
+        <div class="bac-next__badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Response within 24 hours
+        </div>
+        <div class="bac-next__badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+          We review your business before the call
+        </div>
+      </div>
+    </aside>
+
+    </div><!-- /.bac-layout -->
   </section>
 
   <!-- FOOTER -->
