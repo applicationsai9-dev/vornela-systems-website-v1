@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initFaq()
   initWhoWeServe()
   initScrollShowcase()
+  initClientResult()
   initCTA()
   initBlogCards()
 })
@@ -457,6 +458,42 @@ function initStats() {
         }
       }
     )
+  })
+}
+
+// ========================
+// CLIENT RESULT COUNTERS
+// ========================
+function initClientResult() {
+  const els = document.querySelectorAll('[data-cr-target]')
+  if (!els.length) return
+
+  if (prefersReducedMotion) {
+    els.forEach(el => {
+      const suffix = el.getAttribute('data-cr-suffix') || ''
+      el.innerText = el.getAttribute('data-cr-target') + suffix
+    })
+    return
+  }
+
+  els.forEach((el, i) => {
+    const target = parseInt(el.getAttribute('data-cr-target'), 10)
+    const suffix = el.getAttribute('data-cr-suffix') || ''
+
+    gsap.fromTo(el.closest('.cr-stat'),
+      { y: 24, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.7, delay: i * 0.15, ease: 'power3.out',
+        scrollTrigger: { trigger: '.client-result', start: 'top 82%' } }
+    )
+
+    const proxy = { val: 0 }
+    gsap.fromTo(proxy, { val: 0 }, {
+      val: target,
+      duration: 2,
+      ease: 'power2.out',
+      onUpdate() { el.innerText = Math.round(proxy.val) + suffix },
+      scrollTrigger: { trigger: '.client-result', start: 'top 82%' }
+    })
   })
 }
 
