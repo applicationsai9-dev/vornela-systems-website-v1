@@ -49,7 +49,37 @@ document.addEventListener('DOMContentLoaded', () => {
   initWhoWeServe()
   initScrollShowcase()
   initCTA()
+  initBlogCards()
 })
+
+// ========================
+// BLOG CARDS REVEAL
+// ========================
+function initBlogCards() {
+  if (prefersReducedMotion) {
+    document.querySelectorAll('[data-blog-card]').forEach(el => {
+      el.style.opacity = 1
+    })
+    return
+  }
+
+  gsap.utils.toArray('[data-blog-card]').forEach((card, i) => {
+    gsap.fromTo(card,
+      { y: 40, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.75,
+        ease: 'power3.out',
+        delay: i * 0.1,
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 88%',
+        }
+      }
+    )
+  })
+}
 
 // ========================
 // SMOOTH ANCHOR NAVIGATION
