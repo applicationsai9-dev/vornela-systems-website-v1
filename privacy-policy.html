@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy | Vornela Systems</title>
+  <meta name="description" content="Vornela Systems Privacy Policy — how we collect, use, and protect your personal data in compliance with GDPR and the Data Protection Acts 2018.">
+  <link rel="canonical" href="https://vornelasystems.com/privacy-policy.html">
+  <meta property="og:title" content="Privacy Policy | Vornela Systems">
+  <meta property="og:description" content="How Vornela Systems collects, uses, and protects your personal data.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://vornelasystems.com/privacy-policy.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .legal-hero {
+      padding: clamp(7rem, 14vw, 10rem) 0 clamp(2.5rem, 5vw, 4rem);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .legal-hero__label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 1rem;
+      display: block;
+    }
+    .legal-hero__title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.025em;
+      color: var(--text);
+      margin-bottom: 0.75rem;
+    }
+    .legal-hero__meta {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .legal-body {
+      padding: clamp(3rem, 6vw, 5rem) 0 clamp(4rem, 8vw, 7rem);
+    }
+    .legal-content {
+      max-width: 700px;
+    }
+    .legal-content h2 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text);
+      margin: 2.5rem 0 0.75rem;
+      padding-top: 2.5rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .legal-content h2:first-child {
+      margin-top: 0;
+      padding-top: 0;
+      border-top: none;
+    }
+    .legal-content p {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+    .legal-content ul {
+      list-style: none;
+      padding: 0;
+      margin: 0.5rem 0 1rem;
+    }
+    .legal-content ul li {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+      padding-left: 1.25rem;
+      position: relative;
+      margin-bottom: 0.35rem;
+    }
+    .legal-content ul li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--cyan);
+      opacity: 0.5;
+    }
+    .legal-content a {
+      color: var(--cyan);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(143,245,255,0.2);
+      transition: border-color 0.2s ease;
+    }
+    .legal-content a:hover {
+      border-color: rgba(143,245,255,0.6);
+    }
+    .legal-toc {
+      background: var(--surface-1);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 10px;
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 2.5rem;
+    }
+    .legal-toc__label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.9rem;
+      display: block;
+    }
+    .legal-toc ol {
+      list-style: none;
+      padding: 0;
+      counter-reset: toc;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .legal-toc ol li {
+      counter-increment: toc;
+      font-size: 0.85rem;
+    }
+    .legal-toc ol li a {
+      color: var(--text-muted);
+      text-decoration: none;
+      border: none;
+      transition: color 0.2s ease;
+    }
+    .legal-toc ol li a:hover {
+      color: var(--cyan);
+      border: none;
+    }
+    .legal-toc ol li a::before {
+      content: counter(toc) ". ";
+      color: rgba(143,245,255,0.4);
+    }
+
+    /* Progress bar */
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--cyan), var(--blue));
+      z-index: 200;
+      width: 0%;
+      transition: width 0.1s linear;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="progressBar" class="progress-bar" aria-hidden="true"></div>
+  <div class="global-paths" id="heroPaths" aria-hidden="true"></div>
+  <div class="cursor-glow" id="cursorGlow"></div>
+
+  <nav class="nav" id="nav">
+    <div class="container nav__inner">
+      <a href="index.html" class="nav__logo">VORNELA SYSTEMS</a>
+      <div class="nav__links">
+        <a href="index.html#services">Services</a>
+        <a href="index.html#ai-automations">AI &amp; Automation</a>
+        <a href="vornela-blogs.html">Blog</a>
+        <a href="index.html#contact">Contact</a>
+      </div>
+      <div class="nav__ctas">
+        <a href="audit.html" class="btn btn--sm btn--ghost">Free AI Audit</a>
+        <a href="book-a-call.html" class="btn btn--sm">Book a Strategy Call</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="legal-hero">
+    <div class="container">
+      <span class="legal-hero__label">Legal</span>
+      <h1 class="legal-hero__title">Privacy Policy</h1>
+      <p class="legal-hero__meta">Vornela Systems &mdash; Last updated: 9 May 2026</p>
+    </div>
+  </section>
+
+  <section class="legal-body">
+    <div class="container">
+      <div class="legal-content">
+
+        <div class="legal-toc">
+          <span class="legal-toc__label">Contents</span>
+          <ol>
+            <li><a href="#intro">Introduction</a></li>
+            <li><a href="#data-collect">What Data We Collect</a></li>
+            <li><a href="#data-use">How We Use Your Data</a></li>
+            <li><a href="#sms">SMS and Messaging Communications</a></li>
+            <li><a href="#sharing">Data Sharing</a></li>
+            <li><a href="#retention">Data Retention</a></li>
+            <li><a href="#rights">Your Rights</a></li>
+            <li><a href="#cookies">Cookies</a></li>
+            <li><a href="#changes">Changes to This Policy</a></li>
+            <li><a href="#contact">Contact Us</a></li>
+          </ol>
+        </div>
+
+        <h2 id="intro">1. Introduction</h2>
+        <p>Vornela Systems ('we', 'our', 'us') is committed to protecting your personal data. This Privacy Policy explains how we collect, use, and safeguard information when you visit <a href="https://vornelasystems.com">https://vornelasystems.com</a> or interact with our services.</p>
+        <p>We are based in Ireland and operate in full compliance with the General Data Protection Regulation (GDPR) and the Data Protection Acts 2018.</p>
+        <p>Data Controller: Vornela Systems, Fuinnseog, Drombanna, Limerick, Ireland. Contact: <a href="mailto:info@vornelasystems.com">info@vornelasystems.com</a></p>
+
+        <h2 id="data-collect">2. What Data We Collect</h2>
+        <p>We may collect the following personal data when you interact with our website or services:</p>
+        <ul>
+          <li>Name and contact details (email address, phone number) when you submit an enquiry or book a call.</li>
+          <li>Business information you provide when requesting a free AI audit.</li>
+          <li>Technical data such as IP address, browser type, and pages visited, collected automatically via cookies and analytics tools.</li>
+          <li>Communication data, including any messages or enquiries you send to us.</li>
+        </ul>
+
+        <h2 id="data-use">3. How We Use Your Data</h2>
+        <p>We use your personal data for the following purposes:</p>
+        <ul>
+          <li>To respond to your enquiries and provide our services (AI automation, web design, SEO).</li>
+          <li>To send you relevant information about our services, offers, or updates where you have consented.</li>
+          <li>To improve our website and services through analysis of usage data.</li>
+          <li>To comply with our legal obligations.</li>
+        </ul>
+        <p>Our lawful basis for processing is consent, legitimate interests, and contractual necessity as applicable under GDPR.</p>
+
+        <h2 id="sms">4. SMS and Messaging Communications</h2>
+        <p>If you provide your phone number and consent to receive messages, we may contact you via SMS for customer care updates, appointment coordination, service updates, or promotional communications.</p>
+        <p>You can opt out at any time by replying STOP to any message. Message and data rates may apply. Message frequency varies.</p>
+
+        <h2 id="sharing">5. Data Sharing</h2>
+        <p>We do not sell your personal data to third parties. We may share your data with trusted service providers who assist us in operating our website and delivering our services, such as CRM, email, and SMS platforms. All third-party providers are required to handle your data in accordance with GDPR.</p>
+        <p>We may disclose data where required by law or to protect the rights and safety of Vornela Systems or others.</p>
+
+        <h2 id="retention">6. Data Retention</h2>
+        <p>We retain your personal data only for as long as necessary to fulfil the purposes outlined in this policy, or as required by law. Enquiry and contact data is typically retained for up to 2 years.</p>
+
+        <h2 id="rights">7. Your Rights</h2>
+        <p>Under GDPR, you have the right to:</p>
+        <ul>
+          <li>Access the personal data we hold about you.</li>
+          <li>Request correction of inaccurate data.</li>
+          <li>Request deletion of your data ('right to be forgotten').</li>
+          <li>Object to or restrict processing of your data.</li>
+          <li>Data portability.</li>
+        </ul>
+        <p>To exercise any of these rights, contact us at <a href="mailto:info@vornelasystems.com">info@vornelasystems.com</a>. You also have the right to lodge a complaint with the Data Protection Commission (<a href="https://www.dataprotection.ie" target="_blank" rel="noopener">dataprotection.ie</a>).</p>
+
+        <h2 id="cookies">8. Cookies</h2>
+        <p>Our website uses cookies to improve your experience and analyse traffic. By continuing to use our site, you consent to our use of cookies. You can manage or disable cookies through your browser settings.</p>
+
+        <h2 id="changes">9. Changes to This Policy</h2>
+        <p>We may update this Privacy Policy from time to time. The latest version will always be available at <a href="https://vornelasystems.com/privacy-policy.html">https://vornelasystems.com/privacy-policy.html</a>. We encourage you to review it periodically.</p>
+
+        <h2 id="contact">10. Contact Us</h2>
+        <p>If you have any questions about this Privacy Policy, please contact us at:</p>
+        <p>
+          Vornela Systems<br>
+          Fuinnseog, Drombanna, Limerick, Ireland<br>
+          Email: <a href="mailto:info@vornelasystems.com">info@vornelasystems.com</a><br>
+          Website: <a href="https://vornelasystems.com">https://vornelasystems.com</a>
+        </p>
+
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__left">
+        <div class="footer__logo">VORNELA SYSTEMS</div>
+        <p class="footer__tagline">Building the businesses of tomorrow, today.</p>
+        <p class="footer__copy">&copy; 2026 Vornela Systems. All rights reserved.</p>
+        <div class="footer__legal">
+          <a href="privacy-policy.html" class="footer__legal-link">Privacy Policy</a>
+          <span aria-hidden="true"> · </span>
+          <a href="terms-of-service.html" class="footer__legal-link">Terms of Service</a>
+        </div>
+      </div>
+      <div class="footer__right">
+        <div class="footer__col">
+          <p class="footer__col-head label">Services</p>
+          <a href="/capabilities/ai-automations.html">AI Automations</a>
+          <a href="/capabilities/website-design.html">Web Design</a>
+          <a href="/capabilities/seo-ads.html">SEO &amp; Google Ads</a>
+        </div>
+        <div class="footer__col">
+          <p class="footer__col-head label">Company</p>
+          <a href="vornela-blogs.html">Blog</a>
+          <a href="index.html#contact">Contact</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const bar = document.getElementById('progressBar');
+    window.addEventListener('scroll', () => {
+      const h = document.documentElement;
+      bar.style.width = (window.scrollY / (h.scrollHeight - h.clientHeight) * 100) + '%';
+    }, { passive: true });
+
+    // Nav scroll effect
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+
+    // Smooth anchor scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (!target) return;
+        e.preventDefault();
+        const top = target.getBoundingClientRect().top + window.scrollY - 84;
+        window.scrollTo({ top, behavior: 'smooth' });
+      });
+    });
+  </script>
+  <script src="https://widgets.leadconnectorhq.com/loader.js" data-resources-url="https://widgets.leadconnectorhq.com/chat-widget/loader.js" data-widget-id="69ff1e815b108d4a44282fb0" data-source="WEB_USER"></script>
+</body>
+</html>

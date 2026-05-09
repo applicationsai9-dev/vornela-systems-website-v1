@@ -2752,6 +2752,25 @@ svg { display: block; }
   color: rgba(255, 255, 255, 0.2);
 }
 
+.footer__legal {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.footer__legal-link {
+  color: rgba(255, 255, 255, 0.2);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer__legal-link:hover {
+  color: rgba(143, 245, 255, 0.8);
+}
+
 .footer__right {
   display: flex;
   gap: 4rem;
