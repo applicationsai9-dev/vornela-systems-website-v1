@@ -863,7 +863,7 @@ function initScrollShowcase() {
     )
   }
 
-  // Arrow slide navigation
+  // Auto-cycle slides every 8 seconds
   let current = 0
   const total = slides.length
 
@@ -874,18 +874,13 @@ function initScrollShowcase() {
 
     slides[prev].classList.remove('active')
     slides[current].classList.add('active')
-    metaSlides[prev]?.classList.remove('active')
-    metaSlides[current]?.classList.add('active')
-    if (counter) counter.textContent = String(current + 1).padStart(2, '0')
 
-    // Start incoming video, let outgoing fade before pausing
     slides[current].querySelector('video')?.play().catch(() => {})
     const prevVideo = slides[prev].querySelector('video')
     if (prevVideo) setTimeout(() => { prevVideo.pause(); prevVideo.currentTime = 0 }, 750)
   }
 
-  btnPrev?.addEventListener('click', () => goTo(current - 1))
-  btnNext?.addEventListener('click', () => goTo(current + 1))
+  setInterval(() => goTo(current + 1), 8000)
 
   // Ensure first slide's video is playing on init
   slides[0]?.querySelector('video')?.play().catch(() => {})
