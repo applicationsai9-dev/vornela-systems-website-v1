@@ -30,7 +30,6 @@ gsap.ticker.lagSmoothing(0, 0)
 // INIT ON DOM READY
 // ========================
 document.addEventListener('DOMContentLoaded', () => {
-  initVideoAutoplay()
   initExitIntent()
   initSmoothAnchorLinks()
   initCursor()
@@ -53,41 +52,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initCTA()
   initBlogCards()
 })
-
-// ========================
-// VIDEO AUTOPLAY (bypass Safari restrictions)
-// ========================
-function initVideoAutoplay() {
-  const videos = document.querySelectorAll('video[autoplay]')
-  if (!videos.length) return
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      const v = entry.target
-      if (entry.isIntersecting) {
-        v.play().catch(() => {})
-      } else {
-        v.pause()
-      }
-    })
-  }, { threshold: 0.25 })
-
-  videos.forEach(v => {
-    v.muted = true
-    observer.observe(v)
-  })
-
-  // Also fire on first user gesture in case observer fires before interaction
-  const unlock = () => {
-    videos.forEach(v => { if (v.paused) v.play().catch(() => {}) })
-    document.removeEventListener('scroll', unlock, { passive: true })
-    document.removeEventListener('click', unlock)
-    document.removeEventListener('touchstart', unlock)
-  }
-  document.addEventListener('scroll', unlock, { passive: true })
-  document.addEventListener('click', unlock)
-  document.addEventListener('touchstart', unlock)
-}
 
 // ========================
 // BLOG CARDS REVEAL
@@ -863,7 +827,7 @@ function initScrollShowcase() {
     )
   }
 
-  // Auto-cycle slides every 8 seconds
+  // Arrow slide navigation
   let current = 0
   const total = slides.length
 
@@ -874,13 +838,17 @@ function initScrollShowcase() {
 
     slides[prev].classList.remove('active')
     slides[current].classList.add('active')
+    metaSlides[prev]?.classList.remove('active')
+    metaSlides[current]?.classList.add('active')
+    if (counter) counter.textContent = String(current + 1).padStart(2, '0')
 
     slides[current].querySelector('video')?.play().catch(() => {})
     const prevVideo = slides[prev].querySelector('video')
     if (prevVideo) setTimeout(() => { prevVideo.pause(); prevVideo.currentTime = 0 }, 750)
   }
 
-  setInterval(() => goTo(current + 1), 8000)
+  btnPrev?.addEventListener('click', () => goTo(current - 1))
+  btnNext?.addEventListener('click', () => goTo(current + 1))
 
   // Ensure first slide's video is playing on init
   slides[0]?.querySelector('video')?.play().catch(() => {})
